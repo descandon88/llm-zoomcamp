@@ -1,0 +1,11 @@
+services:
+  jupyter:
+    build: ./01-agentic-rag
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./01-agentic-rag:/app
+      - /app/.venv
+    env_file:
+      - .env
+    restart: unless-stopped
