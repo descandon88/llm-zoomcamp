@@ -18,6 +18,9 @@ RUN uv export --frozen --no-dev --no-hashes -o /tmp/requirements.txt && \
 
 RUN uv pip install --system --no-cache sqlitesearch
 
+# Module 01 homework dependencies
+RUN uv pip install --system --no-cache gitsource
+
 COPY . .
 
 EXPOSE 8888
