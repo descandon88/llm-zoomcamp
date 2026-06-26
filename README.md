@@ -39,7 +39,7 @@ Personal progress repository for the [LLM Zoomcamp](https://github.com/DataTalks
 ## Module 02 — Vector Search
 
 **Notebook:** [vector_search.ipynb](02-vector-search/vector_search.ipynb)  
-**Currently watching:** [Vector Search with minsearch](https://www.youtube.com/watch?v=E7KdO3xmESg&list=PL3MmuxUbc_hLZFNgSad56pDBKK8KO0XIv&index=23)
+**Currently watching:** [RAG with Vector Search](https://www.youtube.com/watch?v=-GBW3g3PVTM&list=PL3MmuxUbc_hLZFNgSad56pDBKK8KO0XIv&index=24)
 
 ### Progress
 
