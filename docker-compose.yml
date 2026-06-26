@@ -1,10 +1,33 @@
 services:
-  jupyter:
-    build: ./01-agentic-rag
+
+  general:
+    build: ./
     ports:
       - "8888:8888"
     volumes:
+      - ./:/app
+      - /app/.venv
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  module-01:
+    build: ./01-agentic-rag
+    ports:
+      - "8889:8888"
+    volumes:
       - ./01-agentic-rag:/app
+      - /app/.venv
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  module-02:
+    build: ./02-vector-search
+    ports:
+      - "8890:8888"
+    volumes:
+      - ./02-vector-search:/app
       - /app/.venv
     env_file:
       - .env

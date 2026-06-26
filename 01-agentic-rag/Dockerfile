@@ -20,6 +20,7 @@ RUN uv pip install --system --no-cache sqlitesearch
 
 # Module 01 homework dependencies
 RUN uv pip install --system --no-cache gitsource
+RUN uv pip install --system --no-cache toyaikit
 
 COPY . .
 
