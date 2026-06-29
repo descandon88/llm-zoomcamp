@@ -33,3 +33,30 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+
+  module-02-homework:
+    build: ./02-vector-search/02-homework
+    ports:
+      - "8891:8888"
+    volumes:
+      - ./02-vector-search/02-homework:/app
+      - /app/.venv
+      - ./02-vector-search/embed:/app/embed:ro
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  pgvector:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pswd
+      POSTGRES_DB: faq
+    volumes:
+      - pgvector_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+volumes:
+  pgvector_data:

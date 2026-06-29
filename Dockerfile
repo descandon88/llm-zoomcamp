@@ -18,7 +18,9 @@ RUN uv pip install --system --no-cache \
     minsearch \
     sentence-transformers \
     sqlitesearch \
-    gitsource
+    gitsource \
+    "psycopg[binary]" \
+    tqdm
 
 EXPOSE 8888
 
