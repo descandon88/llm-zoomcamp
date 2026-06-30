@@ -3,15 +3,8 @@ FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim
 WORKDIR /app
 
 RUN uv init --no-workspace
-RUN uv add onnxruntime tokenizers numpy tqdm minsearch gitsource
+RUN uv add onnxruntime tokenizers numpy tqdm minsearch gitsource requests openai python-dotenv "psycopg[binary]"
 RUN uv add --dev huggingface-hub jupyter
-RUN uv pip install --system --no-cache \
-    openai \
-    python-dotenv \
-    "psycopg[binary]" \
-    gitsource \
-    tqdm
-
 
 EXPOSE 8888
 

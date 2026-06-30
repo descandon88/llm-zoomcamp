@@ -42,6 +42,9 @@ services:
       - ./02-vector-search/02-homework:/app
       - /app/.venv
       - ./02-vector-search/embed:/app/embed:ro
+      - ./02-vector-search/02-homework/ingest.py:/app/ingest.py:ro
+      - ./01-agentic-rag/rag_helper.py:/app/rag_helper.py:ro
+
     env_file:
       - .env
     restart: unless-stopped
