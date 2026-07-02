@@ -38,8 +38,7 @@ Personal progress repository for the [LLM Zoomcamp](https://github.com/DataTalks
 
 ## Module 02 — Vector Search
 
-**Notebook:** [vector_search.ipynb](02-vector-search/vector_search.ipynb)  
-**Currently watching:** [RAG with Vector Search](https://www.youtube.com/watch?v=-GBW3g3PVTM&list=PL3MmuxUbc_hLZFNgSad56pDBKK8KO0XIv&index=24)
+**Notebook:** [vector_search.ipynb](02-vector-search/vector_search.ipynb)
 
 ### Progress
 
@@ -50,6 +49,8 @@ Personal progress repository for the [LLM Zoomcamp](https://github.com/DataTalks
 - [x] Batch-encoded all 1 350 FAQ documents into embeddings (with `tqdm` progress tracking)
 - [x] Built a vectorized similarity search with `numpy` — embedding matrix `X`, scores via `X.dot(query_vector)`
 - [x] Retrieved top-5 most relevant documents using `np.argsort`
+- [x] Extended to persistent vector search with `sqlitesearch.VectorSearchIndex` (IVF mode, on-disk `.db` file)
+- [x] Implemented `RAGVector(RAGBase)` — overrides `search()` to embed the query and use vector index; reuses prompt/LLM pipeline from Module 01
 
 ### Stack
 
@@ -57,25 +58,45 @@ Personal progress repository for the [LLM Zoomcamp](https://github.com/DataTalks
 |-----------|------|
 | Embeddings | `sentence-transformers` (`all-MiniLM-L6-v2`) |
 | Similarity search | `numpy` (vectorized dot product) |
+| Persistent vector index | `sqlitesearch` (`VectorSearchIndex`, IVF/HNSW/LSH) |
 | Notebook | JupyterLab (Dockerized) |
+
+---
+
+## Module 02 — Homework (pgvector)
+
+→ See [02-vector-search/02-homework/README.md](02-vector-search/02-homework/README.md)
 
 ---
 
 ## Running locally
 
-This repo uses one Docker Compose service per module, plus a `general` service that mounts the whole repo:
+This repo uses one Docker Compose service per module. Before starting, create a `.env` file with:
 
-```bash
-# All modules together
-docker compose up general --build
-
-# Module 01 only
-docker compose up module-01 --build
-
-# Module 02 only
-docker compose up module-02 --build
+```
+GROQ_API_KEY=...
+OPENAI_API_KEY=...
 ```
 
-Open [http://localhost:8888](http://localhost:8888) (`general`/`module-01`) or [http://localhost:8890](http://localhost:8890) (`module-02`).
+```bash
+# Module 01
+docker compose up module-01 --build
 
-> Copy `.env.example` to `.env` and set `GROQ_API_KEY` before starting.
+# Module 02 — vector search
+docker compose up module-02 --build
+
+# Module 02 — homework (pgvector)
+docker compose up pgvector module-02-homework --build
+```
+
+| Service | URL |
+|---------|-----|
+| `general` | http://localhost:8888 |
+| `module-01` | http://localhost:8889 |
+| `module-02` | http://localhost:8890 |
+| `module-02-homework` | http://localhost:8891 |
+| `pgvector` (Postgres) | localhost:5432 |
+
+> **Note:** `module-02-homework` uses a `uv`-managed virtualenv (`uv run jupyter`). Any new packages must be added via `uv add` in the Dockerfile and the image rebuilt — `uv pip install --system` won't be visible to the notebook kernel.
+>
+> On first use, run `from embed.download import download; download("Xenova/all-MiniLM-L6-v2")` inside the notebook to fetch the ONNX model files before importing `Embedder`.
