@@ -1,6 +1,6 @@
 # LLM Zoomcamp
 
-Personal progress repository for the [LLM Zoomcamp](https://github.com/DataTalksClub/llm-zoomcamp) course by DataTalks.Club.
+Personal repository for my classes and progress through the [LLM Zoomcamp](https://github.com/DataTalksClub/llm-zoomcamp) course by DataTalks.Club. Each module contains my notes, experiments, and homework solutions as I work through the curriculum.
 
 ---
 
