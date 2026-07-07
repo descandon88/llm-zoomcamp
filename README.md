@@ -1,10 +1,12 @@
 # LLM Zoomcamp
 
-Personal repository for my classes and progress through the [LLM Zoomcamp](https://github.com/DataTalksClub/llm-zoomcamp) course by DataTalks.Club. Each module contains my notes, experiments, and homework solutions as I work through the curriculum.
+Personal repository for my classes and progress through the [LLM Zoomcamp](https://github.com/DataTalksClub/llm-zoomcamp) course by DataTalks.Club. Contains my notes, experiments, and homework solutions for each module.
 
 ---
 
 ## Module 01 — Agentic RAG
+
+→ See [01-agentic-rag/README.md](01-agentic-rag/README.md)
 
 **Notebooks:** [module_01.ipynb](01-agentic-rag/module_01.ipynb) · [agents.ipynb](01-agentic-rag/agents.ipynb)
 
@@ -38,6 +40,8 @@ Personal repository for my classes and progress through the [LLM Zoomcamp](https
 
 ## Module 02 — Vector Search
 
+→ See [02-vector-search/README.md](02-vector-search/README.md)
+
 **Notebook:** [vector_search.ipynb](02-vector-search/vector_search.ipynb)
 
 ### Progress
@@ -69,6 +73,26 @@ Personal repository for my classes and progress through the [LLM Zoomcamp](https
 
 ---
 
+## Module 03 — Workflow Orchestration with Kestra
+
+**Video:** [Generate Workflows using AI](https://www.youtube.com/watch?v=OTiOdt17hZg&list=PL3MmuxUbc_hLZFNgSad56pDBKK8KO0XIv&index=31)
+
+### Progress
+
+- [x] Added Kestra (`v1.3.21`) and its backing PostgreSQL to `docker-compose.yml`
+- [x] Configured Kestra with Gemini AI (`gemini-2.5-flash`) for AI-assisted workflow generation
+- [ ] Generating workflows using Kestra's AI assistant
+
+### Stack
+
+| Component | Tool |
+|-----------|------|
+| Orchestrator | Kestra `v1.3.21` |
+| Kestra backend | PostgreSQL 18 |
+| AI workflow generation | Gemini 2.5 Flash |
+
+---
+
 ## Running locally
 
 This repo uses one Docker Compose service per module. Before starting, create a `.env` file with:
@@ -76,7 +100,15 @@ This repo uses one Docker Compose service per module. Before starting, create a 
 ```
 GROQ_API_KEY=...
 OPENAI_API_KEY=...
+SECRET_GEMINI_API_KEY=...   # Base64-encoded
+SECRET_TAVILY_API_KEY=...   # Base64-encoded
+SECRET_OPENAI_API_KEY=...   # Base64-encoded
 ```
+
+> `SECRET_*` values must be Base64-encoded. Encode with:
+> ```powershell
+> [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("your-key-here"))
+> ```
 
 ```bash
 # Module 01
@@ -87,6 +119,9 @@ docker compose up module-02 --build
 
 # Module 02 — homework (pgvector)
 docker compose up pgvector module-02-homework --build
+
+# Module 03 — Kestra
+docker compose up kestra_postgres kestra
 ```
 
 | Service | URL |
@@ -96,6 +131,7 @@ docker compose up pgvector module-02-homework --build
 | `module-02` | http://localhost:8890 |
 | `module-02-homework` | http://localhost:8891 |
 | `pgvector` (Postgres) | localhost:5432 |
+| `kestra` | http://localhost:8080 |
 
 > **Note:** `module-02-homework` uses a `uv`-managed virtualenv (`uv run jupyter`). Any new packages must be added via `uv add` in the Dockerfile and the image rebuilt — `uv pip install --system` won't be visible to the notebook kernel.
 >
