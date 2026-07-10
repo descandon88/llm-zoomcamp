@@ -86,6 +86,7 @@ services:
       - kestra_data:/app/storage
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/kestra-wd:/tmp/kestra-wd
+      - ./03-orchestration/flows:/app/flows:ro
     environment:
       # SECRET_GEMINI_API_KEY: ${SECRET_GEMINI_API_KEY}
       SECRET_TAVILY_API_KEY: ${SECRET_TAVILY_API_KEY}
@@ -100,8 +101,9 @@ services:
         kestra:
           server:
             basicAuth:
-              username: "admin@kestra.io"
-              password: Admin1234!
+              enabled: true
+              username: ${KESTRA_USERNAME}
+              password: ${KESTRA_PASSWORD}
           repository:
             type: postgres
           storage:
@@ -118,7 +120,7 @@ services:
             type: gemini
             gemini:
               model-name: gemini-2.5-flash
-              api-key: ${SECRET_GEMINI_API_KEY}
+              api-key: ${GEMINI_API_KEY}
     ports:
       - "8080:8080"
       - "8081:8081"

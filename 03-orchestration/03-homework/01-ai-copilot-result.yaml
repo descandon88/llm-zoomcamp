@@ -1,0 +1,18 @@
+id: magpie_131966
+namespace: company.team
+
+tasks:
+  - id: load_nyc_taxi_data
+    type: io.kestra.plugin.gcp.bigquery.LoadFromGcs
+    from:
+      - gs://kestra-samples/nyc-taxi-data/yellow_tripdata_2023-01.csv
+    destinationTable: kestra_project.nyc_taxi_dataset.yellow_tripdata
+    format: CSV
+    autodetect: true
+    csvOptions:
+      allowJaggedRows: true
+      encoding: UTF-8
+      fieldDelimiter: ","
+  - id: load_success
+    type: io.kestra.plugin.core.log.Log
+    message: "NYC taxi data loaded to BigQuery table '{{ outputs.load_nyc_taxi_data.destinationTable }}' successfully!"

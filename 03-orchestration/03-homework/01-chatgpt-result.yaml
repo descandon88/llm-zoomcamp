@@ -1,0 +1,38 @@
+id: nyc_taxi_csv_to_bigquery
+namespace: company.team
+
+variables:
+  projectId: your-gcp-project
+  dataset: ny_taxi
+  table: yellow_tripdata_2024_01
+  location: US
+  csvUrl: https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2024-01.csv.gz
+
+tasks:
+  - id: download_csv
+    type: io.kestra.plugin.core.http.Download
+    uri: "{{ vars.csvUrl }}"
+
+  - id: create_dataset
+    type: io.kestra.plugin.gcp.bigquery.Query
+    projectId: "{{ vars.projectId }}"
+    serviceAccount: "{{ secret('GCP_SERVICE_ACCOUNT') }}"
+    sql: |
+      CREATE SCHEMA IF NOT EXISTS `{{ vars.projectId }}.{{ vars.dataset }}`
+      OPTIONS(location="{{ vars.location }}");
+
+  - id: load_csv
+    type: io.kestra.plugin.gcp.bigquery.LoadFromGcs
+    projectId: "{{ vars.projectId }}"
+    serviceAccount: "{{ secret('GCP_SERVICE_ACCOUNT') }}"
+    from:
+      - "{{ outputs.download_csv.uri }}"
+    destinationTable: "{{ vars.projectId }}.{{ vars.dataset }}.{{ vars.table }}"
+    format: CSV
+    csvOptions:
+      skipLeadingRows: 1
+      autodetect: true
+      fieldDelimiter: ","
+      allowQuotedNewLines: true
+      quote: "\""
+    writeDisposition: WRITE_TRUNCATE
