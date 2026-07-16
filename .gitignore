@@ -8,3 +8,5 @@ __pycache__/
 *.db-wal
 
 CLAUDE.md
+
+blog.md
