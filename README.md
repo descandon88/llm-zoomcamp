@@ -73,6 +73,34 @@ Personal repository for my classes and progress through the [LLM Zoomcamp](https
 
 ---
 
+## Module 04 — RAG Evaluation
+
+**Video:** [4.3 Ground truth for all Documents](https://www.youtube.com/watch?v=eM6xmdZDT6k&list=PL3MmuxUbc_hLZFNgSad56pDBKK8KO0XIv&index=36)
+
+**Notebook:** [04-evaluation/01-data-gen.ipynb](04-evaluation/01-data-gen.ipynb)
+
+Runs inside the `general` service (http://localhost:8888) — the whole repo is mounted at `/app`.
+
+### Progress
+
+- [x] Filtered FAQ dataset to `llm-zoomcamp` course documents
+- [x] Generated evaluation questions using structured LLM output (`client.beta.chat.completions.parse()` with Pydantic models)
+- [x] Adapted `evaluation_utils.py` to use Groq-compatible Chat Completions API (instead of OpenAI Responses API)
+- [x] Configured structured output with Groq models that support `json_schema` (`openai/gpt-oss-20b`)
+- [x] Wired cost tracking via `calc_price()` using `prompt_tokens` / `completion_tokens`
+- [x] `RAGWithUsage(RAGBase)` — RAG pipeline with per-call usage tracking and cumulative cost reporting
+
+### Stack
+
+| Component | Tool |
+|-----------|------|
+| LLM (structured output) | Groq — `openai/gpt-oss-20b` |
+| Structured output format | `client.beta.chat.completions.parse()` + Pydantic |
+| RAG pipeline | `RAGWithUsage(RAGBase)` with usage tracking |
+| Notebook | JupyterLab via `general` service |
+
+---
+
 ## Module 03 — Workflow Orchestration with Kestra
 
 **Video:** [Generate Workflows using AI](https://www.youtube.com/watch?v=OTiOdt17hZg&list=PL3MmuxUbc_hLZFNgSad56pDBKK8KO0XIv&index=31)
@@ -80,8 +108,14 @@ Personal repository for my classes and progress through the [LLM Zoomcamp](https
 ### Progress
 
 - [x] Added Kestra (`v1.3.21`) and its backing PostgreSQL to `docker-compose.yml`
-- [x] Configured Kestra with Gemini AI (`gemini-2.5-flash`) for AI-assisted workflow generation
-- [ ] Generating workflows using Kestra's AI assistant
+- [x] Configured Kestra AI Copilot with Gemini (`gemini-2.0-flash`)
+- [x] Configured credentials as env vars (`KESTRA_USERNAME`, `KESTRA_PASSWORD`, `GEMINI_API_KEY`)
+- [x] Mounted `03-orchestration/flows/` into the container; flows imported via Kestra API
+- [x] Ran AI Copilot vs ChatGPT comparison (Q1) — Copilot uses RAG over plugin docs
+- [x] Ran RAG vs no-RAG flows (`1_chat_without_rag.yaml` / `2_chat_with_rag.yaml`) — Q2
+- [x] Ran `4_simple_agent.yaml` for token usage analysis — Q3 & Q4
+
+→ See [03-orchestration/03-homework/README.md](03-orchestration/03-homework/README.md)
 
 ### Stack
 
@@ -89,7 +123,8 @@ Personal repository for my classes and progress through the [LLM Zoomcamp](https
 |-----------|------|
 | Orchestrator | Kestra `v1.3.21` |
 | Kestra backend | PostgreSQL 18 |
-| AI workflow generation | Gemini 2.5 Flash |
+| AI workflow generation | Gemini 2.0 Flash (via AI Copilot) |
+| Flow agents | `io.kestra.plugin.ai.agent.AIAgent` |
 
 ---
 
