@@ -44,6 +44,21 @@ def llm_structured(client, instructions, user_prompt, output_type, model="openai
     return response.choices[0].message.parsed, response.usage
 
 
+def llm_structured_openai(client, instructions, user_prompt, output_type, model="gpt-4o-mini"):
+    messages = [
+        {"role": "developer", "content": instructions},
+        {"role": "user", "content": user_prompt}
+    ]
+
+    response = client.responses.parse(
+        model=model,
+        input=messages,
+        text_format=output_type
+    )
+
+    return response.output_parsed, response.usage
+
+
 def llm_structured_retry(
     client,
     instructions,
@@ -56,6 +71,29 @@ def llm_structured_retry(
     for attempt in range(max_retries):
         try:
             return llm_structured(
+                client,
+                instructions,
+                user_prompt,
+                output_type,
+                model=model,
+            )
+        except Exception:
+            if attempt == max_retries - 1:
+                raise
+            time.sleep(2 ** attempt)
+
+
+def llm_structured_retry_openai(
+    client,
+    instructions,
+    user_prompt,
+    output_type,
+    model="gpt-4o-mini",
+    max_retries=3,
+):
+    for attempt in range(max_retries):
+        try:
+            return llm_structured_openai(
                 client,
                 instructions,
                 user_prompt,
@@ -91,20 +129,20 @@ class RAGWithUsage(RAGBase):
         )
 
     def llm(self, prompt):
-        input_messages = [
-            {"role": "developer", "content": self.instructions},
+        messages = [
+            {"role": "system", "content": self.instructions},
             {"role": "user", "content": prompt}
         ]
 
-        response = self.llm_client.responses.create(
+        response = self.llm_client.chat.completions.create(
             model=self.model,
-            input=input_messages
+            messages=messages
         )
 
         self.last_usage = response.usage
         self.usages.append(response.usage)
 
-        return response.output_text
+        return response.choices[0].message.content
 
     def total_cost(self):
         return calc_total_price(self.usages)

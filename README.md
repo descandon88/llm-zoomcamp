@@ -75,7 +75,7 @@ Personal repository for my classes and progress through the [LLM Zoomcamp](https
 
 ## Module 04 — RAG Evaluation
 
-**Video:** [4.3 Ground truth for all Documents](https://www.youtube.com/watch?v=eM6xmdZDT6k&list=PL3MmuxUbc_hLZFNgSad56pDBKK8KO0XIv&index=36)
+**Video:** [4.13 LLM as a Judge](https://www.youtube.com/watch?v=BEXVULgalDM&list=PL3MmuxUbc_hLZFNgSad56pDBKK8KO0XIv&index=42)
 
 **Notebook:** [04-evaluation/01-data-gen.ipynb](04-evaluation/01-data-gen.ipynb)
 
