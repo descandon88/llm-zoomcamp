@@ -11,6 +11,17 @@ services:
       - .env
     restart: unless-stopped
 
+  module-05:
+    build: ./
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./05-monitoring:/app
+    env_file:
+      - .env
+    command: streamlit run app.py --server.port 8501 --server.address 0.0.0.0
+    restart: unless-stopped
+
   module-01:
     build: ./01-agentic-rag
     ports:

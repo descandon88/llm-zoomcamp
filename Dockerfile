@@ -20,8 +20,10 @@ RUN uv pip install --system --no-cache \
     sqlitesearch \
     gitsource \
     "psycopg[binary]" \
-    tqdm
+    tqdm \
+    streamlit
 
 EXPOSE 8888
+EXPOSE 8501
 
 CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=", "--NotebookApp.password="]

@@ -13,3 +13,6 @@ Hit rate doesn't guarantee the best answer on top
 grid search --> boosting loop of evaluation in data --> Evaluation question boost
 
 ## Part 2: Rag and Agent Evaluation
+
+
+Rag_helper --> Rag is first step is 1) Search, 2) building prompt , 3) LLM

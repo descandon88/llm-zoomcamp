@@ -128,6 +128,31 @@ Runs inside the `general` service (http://localhost:8888) — the whole repo is 
 
 ---
 
+## Module 05 — Monitoring
+
+**App:** [05-monitoring/app.py](05-monitoring/app.py)
+
+→ See [module-05 in docker-compose.yml](docker-compose.yml)
+
+Own Compose service (`module-05`), built from the root `Dockerfile` — Streamlit UI at http://localhost:8501.
+
+### Progress
+
+- [x] Built a Streamlit chat UI (`app.py`) wrapping the RAG assistant
+- [x] Reused the `RAGBase` / `ingest.py` pattern from earlier modules for the FAQ index and Groq-backed LLM (`assistant.py`, `rag_helper.py`)
+- [x] Added `streamlit` to the shared root image and exposed port `8501` (`Dockerfile`)
+- [x] Added dedicated `module-05` Compose service — mounts `05-monitoring/` and auto-starts `streamlit run app.py` on container start
+
+### Stack
+
+| Component | Tool |
+|-----------|------|
+| UI | `streamlit` |
+| RAG pipeline | `RAGBase` (`rag_helper.py`) |
+| LLM | Groq API |
+
+---
+
 ## Running locally
 
 This repo uses one Docker Compose service per module. Before starting, create a `.env` file with:
@@ -157,6 +182,9 @@ docker compose up pgvector module-02-homework --build
 
 # Module 03 — Kestra
 docker compose up kestra_postgres kestra
+
+# Module 05 — monitoring (Streamlit)
+docker compose up module-05 --build
 ```
 
 | Service | URL |
@@ -165,9 +193,15 @@ docker compose up kestra_postgres kestra
 | `module-01` | http://localhost:8889 |
 | `module-02` | http://localhost:8890 |
 | `module-02-homework` | http://localhost:8891 |
+| `module-05` | http://localhost:8501 |
 | `pgvector` (Postgres) | localhost:5432 |
 | `kestra` | http://localhost:8080 |
 
 > **Note:** `module-02-homework` uses a `uv`-managed virtualenv (`uv run jupyter`). Any new packages must be added via `uv add` in the Dockerfile and the image rebuilt — `uv pip install --system` won't be visible to the notebook kernel.
 >
 > On first use, run `from embed.download import download; download("Xenova/all-MiniLM-L6-v2")` inside the notebook to fetch the ONNX model files before importing `Embedder`.
+>
+> `module-05` auto-starts Streamlit on container start (`command: streamlit run app.py ...` in `docker-compose.yml`) — no manual launch needed. Rebuild/restart it with `make chat` from `05-monitoring/` (or run the underlying command directly if `make` isn't installed):
+> ```bash
+> docker-compose -f ../docker-compose.yml up -d --build module-05
+> ```
