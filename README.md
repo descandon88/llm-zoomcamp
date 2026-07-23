@@ -130,7 +130,7 @@ Runs inside the `general` service (http://localhost:8888) — the whole repo is 
 
 ## Module 05 — Monitoring
 
-**Video:** [5.4 Capturing Metrics](https://www.youtube.com/watch?v=JGh6-DqaueA&list=PL3MmuxUbc_hLZFNgSad56pDBKK8KO0XIv&index=48) (at 4:17)
+**Video:** [5.5 Database](https://www.youtube.com/watch?v=iXRu_AbMtuU&list=PL3MmuxUbc_hLZFNgSad56pDBKK8KO0XIv&index=49) (at 2:30)
 
 **App:** [05-monitoring/app.py](05-monitoring/app.py)
 
@@ -185,8 +185,8 @@ docker compose up pgvector module-02-homework --build
 # Module 03 — Kestra
 docker compose up kestra_postgres kestra
 
-# Module 05 — monitoring (Streamlit)
-docker compose up module-05 --build
+# Module 05 — monitoring (Streamlit + Postgres)
+docker-compose up -d --build module-05-postgres module-05
 ```
 
 | Service | URL |
