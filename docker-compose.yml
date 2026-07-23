@@ -33,6 +33,28 @@ services:
       - monitoring
     restart: unless-stopped
 
+  dashboard:
+    build: ./
+    ports:
+      - "8502:8502"
+    volumes:
+      - ./05-monitoring:/app
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: module-05-postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pswd
+      POSTGRES_DB: monitoring
+    command: streamlit run dashboard.py --server.port 8502 --server.address 0.0.0.0
+    depends_on:
+      module-05-postgres:
+        condition: service_healthy
+    networks:
+      - monitoring
+    restart: unless-stopped
+
   module-05-postgres:
     image: postgres:17
     environment:
