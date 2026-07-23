@@ -130,6 +130,8 @@ Runs inside the `general` service (http://localhost:8888) — the whole repo is 
 
 ## Module 05 — Monitoring
 
+**Video:** [5.4 Capturing Metrics](https://www.youtube.com/watch?v=JGh6-DqaueA&list=PL3MmuxUbc_hLZFNgSad56pDBKK8KO0XIv&index=48) (at 4:17)
+
 **App:** [05-monitoring/app.py](05-monitoring/app.py)
 
 → See [module-05 in docker-compose.yml](docker-compose.yml)
