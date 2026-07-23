@@ -5,7 +5,11 @@ from db_save import save_conversation
 
 from db_feedback import save_feedback
 
+from judge import evaluate_relevance
+from db_feedback import save_feedback
+
 assistant = create_assistant()
+
 
 st.title("Course Assistant")
 
@@ -26,6 +30,11 @@ if st.button("Ask"):
 
         conversation_id = save_conversation(record, user_input, "llm-zoomcamp")
         st.session_state.conversation_id = conversation_id
+        relevance, explanation = evaluate_relevance(user_input, answer)
+        save_feedback(conversation_id, "judge",
+                relevance=relevance, explanation=explanation)
+        st.write(f"Relevance: {relevance}")
+        st.write(f"Explanation: {explanation}")
 
 col1, col2 = st.columns(2)
 with col1:

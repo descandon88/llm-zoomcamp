@@ -190,6 +190,18 @@ services:
       kestra_postgres:
         condition: service_started
 
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - monitoring
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+
 volumes:
   pgvector_data:
   module_05_postgres_data:
@@ -198,6 +210,8 @@ volumes:
   kestra_data:
     driver: local
   kestra_tmp:
+    driver: local
+  grafana_data:
     driver: local
 
 networks:
