@@ -1,0 +1,12 @@
+services:
+
+  llm-zoomcamp-hw5:
+    build: .
+    container_name: llm-zoomcamp-hw5
+    ports:
+      - "8892:8888"
+    volumes:
+      - ../:/app
+    env_file:
+      - ../../.env
+    restart: unless-stopped
