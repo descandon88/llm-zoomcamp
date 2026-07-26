@@ -1,7 +1,9 @@
 """Starter code for the monitoring homework.
 
-Sets up the text-search RAG from homework 1 and a shared OpenAI client.
+Sets up the text-search RAG from homework 1 and a shared Groq client.
 """
+
+import os
 
 from openai import OpenAI
 
@@ -28,7 +30,10 @@ documents = [file.parse() for file in reader.read()]
 index = Index(text_fields=["content"], keyword_fields=["filename"])
 index.fit(documents)
 
-client = OpenAI()
+client = OpenAI(
+    api_key=os.getenv("GROQ_API_KEY"),
+    base_url="https://api.groq.com/openai/v1"
+)
 rag = RAGBase(index=index, llm_client=client)
 
 if __name__ == "__main__":

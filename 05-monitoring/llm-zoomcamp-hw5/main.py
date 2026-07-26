@@ -1,24 +1,19 @@
-from opentelemetry import trace
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import ConsoleSpanExporter, SimpleSpanProcessor
+from starter import index, client
 
-provider = TracerProvider()
-provider.add_span_processor(
-    SimpleSpanProcessor(ConsoleSpanExporter())
-)
-trace.set_tracer_provider(provider)
-
-tracer = trace.get_tracer("llm-zoomcamp")
+from first_trace import RAGTraced, report_spans
 
 
+def calc_cost(usage, input_price_per_million=0.05, output_price_per_million=0.08):
+    input_cost = (usage.prompt_tokens / 1_000_000) * input_price_per_million
+    output_cost = (usage.completion_tokens / 1_000_000) * output_price_per_million
+    return input_cost + output_cost
 
-with tracer.start_as_current_span("my_operation") as span:
-    # your code here
-    span.set_attribute("my_key", "my_value")
 
-
-from starter import rag
+assistant = RAGTraced(index=index, llm_client=client)
 
 query = "How does the agentic loop keep calling the model until it stops?"
-answer = rag.rag(query)
+answer = assistant.rag(query)
+
 print(answer)
+
+report_spans()
